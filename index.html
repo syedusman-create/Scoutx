@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ScoutX — Where Athletes Get Found</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black: #080a0f;
+    --dark: #0e1117;
+    --card: #13181f;
+    --border: #1e2530;
+    --green: #00e676;
+    --green-dim: #00b85a;
+    --amber: #ffab00;
+    --text: #e8edf3;
+    --muted: #6b7a8d;
+    --white: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(8,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .logo span { color: var(--green); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 13px; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-cta {
+    background: var(--green); color: var(--black);
+    padding: 10px 24px; border-radius: 2px;
+    font-size: 13px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; text-decoration: none;
+    transition: background .2s, transform .1s;
+  }
+  .nav-cta:hover { background: #00ff8c; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,230,118,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,230,118,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(0,230,118,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-glow-2 {
+    position: absolute;
+    bottom: -100px; left: 10%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,171,0,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 720px; }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(0,230,118,0.08);
+    border: 1px solid rgba(0,230,118,0.25);
+    padding: 6px 16px; border-radius: 2px;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--green);
+    margin-bottom: 32px;
+  }
+  .eyebrow-dot {
+    width: 6px; height: 6px; background: var(--green);
+    border-radius: 50%; animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.4); }
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 9vw, 120px);
+    line-height: .95;
+    letter-spacing: 1px;
+    color: var(--white);
+  }
+  h1 .accent { color: var(--green); }
+  h1 .line2 { color: var(--muted); }
+
+  .hero-sub {
+    margin-top: 28px;
+    font-size: 18px; font-weight: 300; line-height: 1.7;
+    color: var(--muted); max-width: 520px;
+  }
+  .hero-sub strong { color: var(--text); font-weight: 500; }
+
+  .hero-actions {
+    margin-top: 44px;
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--green); color: var(--black);
+    padding: 16px 36px; border-radius: 2px;
+    font-size: 14px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: background .2s, transform .15s;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { background: #00ff8c; transform: translateY(-2px); }
+  .btn-outline {
+    border: 1px solid var(--border); color: var(--text);
+    padding: 16px 36px; border-radius: 2px;
+    font-size: 14px; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; text-decoration: none;
+    transition: border-color .2s, color .2s;
+    background: transparent; cursor: pointer;
+  }
+  .btn-outline:hover { border-color: var(--green); color: var(--green); }
+
+  .hero-stats {
+    margin-top: 64px;
+    display: flex; gap: 48px; flex-wrap: wrap;
+  }
+  .stat-item { border-left: 2px solid var(--green); padding-left: 16px; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; color: var(--white); line-height: 1;
+  }
+  .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; }
+
+  /* ── ATHLETE CARD MOCKUP ── */
+  .hero-card {
+    position: absolute; right: 48px; top: 50%;
+    transform: translateY(-50%);
+    width: 340px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    z-index: 2;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  }
+  .card-banner {
+    height: 80px;
+    background: linear-gradient(135deg, #0a2a18 0%, #0d1f2d 100%);
+    position: relative;
+    display: flex; align-items: flex-end; padding: 0 20px 0;
+  }
+  .card-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: var(--green); color: var(--black);
+    font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 2px;
+  }
+  .card-avatar {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a3a2a, #2a4a3a);
+    border: 3px solid var(--card);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; color: var(--green);
+    position: relative; top: 30px;
+  }
+  .card-body { padding: 40px 20px 20px; }
+  .card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 700; color: var(--white);
+  }
+  .card-role { font-size: 12px; color: var(--green); margin-top: 2px; letter-spacing: 1px; }
+  .card-location { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .card-stats-row {
+    display: flex; gap: 0;
+    margin: 18px 0;
+    border: 1px solid var(--border);
+    border-radius: 2px; overflow: hidden;
+  }
+  .card-stat {
+    flex: 1; padding: 10px 0; text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .card-stat:last-child { border-right: none; }
+  .card-stat-n {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; color: var(--white);
+  }
+  .card-stat-l { font-size: 9px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  .card-skills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+  .skill-tag {
+    background: rgba(0,230,118,0.08);
+    border: 1px solid rgba(0,230,118,0.2);
+    color: var(--green); font-size: 10px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 2px;
+  }
+  .card-fitness {
+    margin-top: 16px;
+    background: rgba(255,171,0,0.06);
+    border: 1px solid rgba(255,171,0,0.2);
+    border-radius: 2px; padding: 10px 14px;
+  }
+  .fitness-label { font-size: 10px; color: var(--amber); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
+  .fitness-bar-track {
+    margin-top: 6px;
+    height: 4px; background: var(--border); border-radius: 2px;
+  }
+  .fitness-bar-fill {
+    height: 4px; width: 84%;
+    background: linear-gradient(90deg, var(--amber), #ff6d00);
+    border-radius: 2px;
+  }
+  .fitness-score { font-size: 11px; color: var(--amber); margin-top: 4px; text-align: right; font-weight: 600; }
+
+  /* ── SECTIONS ── */
+  .section { padding: 100px 48px; max-width: 1280px; margin: 0 auto; }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--green);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 5vw, 64px);
+    color: var(--white); line-height: 1; margin-bottom: 24px;
+  }
+  .section-sub {
+    font-size: 16px; color: var(--muted); max-width: 520px; line-height: 1.7;
+  }
+
+  .features-grid {
+    margin-top: 64px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .feature-card {
+    background: var(--dark);
+    padding: 40px 36px;
+    transition: background .2s;
+    position: relative; overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--green); transform: scaleX(0); transform-origin: left;
+    transition: transform .3s;
+  }
+  .feature-card:hover { background: var(--card); }
+  .feature-card:hover::before { transform: scaleX(1); }
+
+  .feature-icon { font-size: 32px; margin-bottom: 20px; }
+  .feature-title { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+  .feature-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* ── HOW IT WORKS ── */
+  .how-section { background: var(--dark); padding: 100px 48px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .how-inner { max-width: 1280px; margin: 0 auto; }
+  .steps { margin-top: 64px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
+  .step-num { margin-bottom: 24px; position: relative; }
+  .step-num::after { content: ''; position: absolute; top: 50%; left: 40px; right: -20px; height: 1px; background: var(--border); }
+  .step:last-child .step-num::after { display: none; }
+  .step-dot { width: 40px; height: 40px; background: var(--card); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--green); position: relative; z-index: 2; }
+  .step-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+  .step-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* ── WAITLIST FORM ── */
+  .cta-section {
+    padding: 120px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(to bottom, var(--black), var(--dark));
+  }
+  .cta-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,230,118,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px, 8vw, 96px); line-height: .9; margin-bottom: 24px; color: var(--white); }
+  .cta-section h2 span { color: var(--green); }
+  .cta-section p { font-size: 18px; color: var(--muted); margin-bottom: 48px; }
+
+  .waitlist-form {
+    max-width: 500px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    z-index: 2;
+  }
+  .form-group { display: flex; gap: 10px; }
+  .form-input {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    color: var(--white);
+    font-family: inherit;
+    font-size: 14px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .form-input:focus { border-color: var(--green); }
+  .form-select {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    color: var(--white);
+    font-family: inherit;
+    font-size: 14px;
+    border-radius: 2px;
+    outline: none;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 60px 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1px; color: var(--white); }
+  .footer-logo span { color: var(--green); }
+  .footer-text { font-size: 12px; color: var(--muted); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 12px; transition: color .2s; }
+  .footer-links a:hover { color: var(--green); }
+
+  @media (max-width: 992px) {
+    .hero { flex-direction: column; padding-top: 160px; text-align: center; }
+    .hero-content { max-width: 100%; }
+    .hero-sub { margin-left: auto; margin-right: auto; }
+    .hero-actions { justify-content: center; }
+    .hero-stats { justify-content: center; }
+    .hero-card { position: relative; right: auto; top: auto; transform: none; margin-top: 80px; }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .form-group { flex-direction: column; }
+  }
+  @media (max-width: 600px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="logo">SCOUT<span>X</span></a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#cta">Waitlist</a></li>
+    </ul>
+    <a href="#cta" class="nav-cta">Join Waitlist</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow-2"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="eyebrow-dot"></div>
+        India's First Multi-Sport Discovery Platform
+      </div>
+      <h1>WHERE<br><span class="accent">ATHLETES</span><br><span class="line2">GET FOUND.</span></h1>
+      <p class="hero-sub">
+        The professional network built for sport. Starting with <strong>Football</strong>, expanding to all sports. Build your verified profile and get discovered by scouts worldwide.
+      </p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn-primary">Join the Waitlist →</a>
+        <a href="#how" class="btn-outline">See How It Works</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">500+</div>
+          <div class="stat-label">Pre-Registered</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">Football</div>
+          <div class="stat-label">Current Focus</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">All India</div>
+          <div class="stat-label">Coverage</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATHLETE CARD MOCKUP -->
+    <div class="hero-card">
+      <div class="card-banner">
+        <div class="card-badge">✓ Verified</div>
+        <div class="card-avatar">AK</div>
+      </div>
+      <div class="card-body">
+        <div class="card-name">Aryan Khan</div>
+        <div class="card-role">Central Midfielder · Football</div>
+        <div class="card-location">📍 Bengaluru, India · Age 19</div>
+        <div class="card-stats-row">
+          <div class="card-stat">
+            <div class="card-stat-n">87</div>
+            <div class="card-stat-l">Matches</div>
+          </div>
+          <div class="card-stat">
+            <div class="card-stat-n">23</div>
+            <div class="card-stat-l">Goals</div>
+          </div>
+          <div class="card-stat">
+            <div class="card-stat-n">41</div>
+            <div class="card-stat-l">Assists</div>
+          </div>
+        </div>
+        <div class="card-skills">
+          <span class="skill-tag">Passing</span>
+          <span class="skill-tag">Vision</span>
+          <span class="skill-tag">Pressing</span>
+        </div>
+        <div class="card-fitness">
+          <div class="fitness-label">⚡ Fitness Score</div>
+          <div class="fitness-bar-track">
+            <div class="fitness-bar-fill"></div>
+          </div>
+          <div class="fitness-score">84 / 100</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="section-label">Platform Features</div>
+    <h2 class="section-title">EVERYTHING A SCOUT<br>NEEDS. EVERYTHING<br>AN ATHLETE DESERVES.</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🏅</div>
+        <div class="feature-title">Verified Profiles</div>
+        <p class="feature-desc">Complete career history and stats verifiable by coaches and clubs. No more word-of-mouth.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔭</div>
+        <div class="feature-title">Scout Engine</div>
+        <p class="feature-desc">Filter athletes by sport, position, and fitness. Find the exact profile you need in seconds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Fitness Module</div>
+        <p class="feature-desc">Standardized physical tests attached directly to your profile. Prove your physical edge.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section" id="how">
+    <div class="how-inner">
+      <div class="section-label">How It Works</div>
+      <h2 class="section-title">FROM GRASSROOTS<br>TO GLOBAL STAGE.</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num"><div class="step-dot">1</div></div>
+          <div class="step-title">Build Profile</div>
+          <p class="step-desc">Add your sport, history, and highlight clips.</p>
+        </div>
+        <div class="step">
+          <div class="step-num"><div class="step-dot">2</div></div>
+          <div class="step-title">Get Verified</div>
+          <p class="step-desc">Authenticity builds trust with top clubs.</p>
+        </div>
+        <div class="step">
+          <div class="step-num"><div class="step-dot">3</div></div>
+          <div class="step-title">Get Discovered</div>
+          <p class="step-desc">Appear in scout searches across the country.</p>
+        </div>
+        <div class="step">
+          <div class="step-num"><div class="step-dot">4</div></div>
+          <div class="step-title">Make Your Move</div>
+          <p class="step-desc">Connect with your next team through ScoutX.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA / WAITLIST -->
+  <section class="cta-section" id="cta">
+    <div class="cta-glow"></div>
+    <h2>JOIN THE<br><span>WAITLIST</span></h2>
+    <p>Be the first to know when we launch for your sport.</p>
+    
+    <!-- FORM WILL BE HANDLED BY FORMSPREE -->
+    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="waitlist-form">
+      <div class="form-group">
+        <input type="text" name="name" placeholder="Full Name" class="form-input" required>
+        <input type="email" name="email" placeholder="Email Address" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <select name="role" class="form-select" required>
+          <option value="" disabled selected>I am a...</option>
+          <option value="Athlete">Athlete</option>
+          <option value="Scout">Scout / Club Admin</option>
+          <option value="Coach">Coach</option>
+          <option value="Fan">Fan / Other</option>
+        </select>
+        <select name="sport" class="form-select" required>
+          <option value="" disabled selected>Primary Sport</option>
+          <option value="Football">Football</option>
+          <option value="Cricket">Cricket</option>
+          <option value="Basketball">Basketball</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Reserve My Spot →</button>
+    </form>
+  </section>
+
+  <footer>
+    <div class="footer-logo">Scout<span>X</span></div>
+    <div class="footer-text">© 2025 ScoutX. Built for the next generation of Indian athletes.</div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="mailto:hello@scoutx.in">Contact</a>
+    </div>
+  </footer>
+
+</body>
+</html>
